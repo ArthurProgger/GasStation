@@ -34,9 +34,69 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>gas-station-icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.4.4.0\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.2.4.9\lib\net47\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.10.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.10.9\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="Syncfusion.Compression.Base, Version=21.2460.9.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Compression.Base.21.2.9\lib\net46\Syncfusion.Compression.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Licensing, Version=21.2460.9.0, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.21.2.9\lib\net46\Syncfusion.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Pdf.Base, Version=21.2460.9.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Pdf.Wpf.21.2.9\lib\net46\Syncfusion.Pdf.Base.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.6.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -46,15 +106,71 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WebMoney.Cryptography, Version=4.0.0.0, Culture=neutral, PublicKeyToken=236f20e4200c621f, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebMoney.Cryptography.4.0.0\lib\netstandard2.0\WebMoney.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMoney.XmlInterfaces, Version=2.0.2.0, Culture=neutral, PublicKeyToken=236f20e4200c621f, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebMoney.XmlInterfaces.2.0.2\lib\netstandard2.0\WebMoney.XmlInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XamlAnimatedGif, Version=2.0.0.0, Culture=neutral, PublicKeyToken=20a987d8023d9690, processorArchitecture=MSIL">
+      <HintPath>..\packages\XamlAnimatedGif.2.1.1\lib\net45\XamlAnimatedGif.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppMethods.cs" />
+    <Compile Include="Columns.cs" />
+    <Compile Include="MainWindowBasket.cs" />
+    <Compile Include="MainWindowEditDataPage.cs" />
+    <Compile Include="MainWindowFueling.cs" />
+    <Compile Include="MainWindowNewSupply.cs" />
+    <Compile Include="MainWindowStufferData.cs" />
+    <Compile Include="MainWindowSuppliers.cs" />
+    <Compile Include="MainWindowGasColumns.cs" />
+    <Compile Include="MainWindowGasStationShop.cs" />
+    <Compile Include="MainWindowProductInfo.cs" />
+    <Compile Include="MainWindowRefueling.cs" />
+    <Compile Include="MainWindowStuffers.cs" />
+    <Compile Include="MainWindowSuppliesPage.cs" />
+    <Compile Include="MainWindowTablePage.cs" />
+    <Compile Include="MainWindowTanks.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SideMessage.cs" />
+    <Compile Include="SystemConfigs.cs" />
+    <Compile Include="TablesSynonyms.cs" />
+    <Page Include="FatClient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,19 +179,29 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FatClient.xaml.cs">
+      <DependentUpon>FatClient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FTSCompanyData.cs" />
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Message.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainWindowVariables.cs" />
+    <Compile Include="Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -84,15 +210,161 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Black.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-Black.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Black.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-BlackItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-BlackItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-BlackItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Bold.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-Bold.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Bold.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-BoldItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-BoldItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-BoldItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-ExtraBold.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-ExtraBold.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-ExtraBold.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-ExtraBoldItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-ExtraBoldItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-ExtraBoldItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Heavy.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-Heavy.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Heavy.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-HeavyItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-HeavyItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-HeavyItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Light.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-Light.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Light.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-LightItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-LightItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-LightItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Medium.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-Medium.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Medium.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-MediumItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-MediumItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-MediumItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Regular.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-Regular.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Regular.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-RegularItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-RegularItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-RegularItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-SemiBold.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-SemiBold.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-SemiBold.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-SemiBoldItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-SemiBoldItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-SemiBoldItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Thin.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-Thin.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-Thin.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-ThinItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-ThinItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-ThinItalic.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-UltraLight.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-UltraLight.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-UltraLight.woff" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-UltraLightItalic.eot" />
+    <Resource Include="Resources\Fonts\Gilroy\Gilroy-UltraLightItalic.ttf" />
+    <None Include="Resources\Fonts\Gilroy\Gilroy-UltraLightItalic.woff" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\supp_add.png" />
+    <Resource Include="supp_add.png" />
+    <Resource Include="Resources\Icons\add supply.png" />
+    <Resource Include="Resources\Icons\product-range.png" />
+    <Resource Include="Resources\Icons\add-product.png" />
+    <Resource Include="Resources\Icons\truck.png" />
+    <Resource Include="Resources\Icons\save pdf.png" />
+    <Resource Include="Resources\Icons\shopping-basket.png" />
+    <Resource Include="gas-station-icon.ico" />
+    <Content Include="Resources\Fonts\Gilroy\demo.html" />
+    <Content Include="Resources\Fonts\Gilroy\stylesheet.css" />
+    <Resource Include="Resources\Icons\loginIcon.png" />
+    <Resource Include="Resources\Icons\team.png" />
+    <Resource Include="Resources\Icons\save.png" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_fuel_types_of_columns.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.gas_columns_fuel_types.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.tanks_volume.StoredProcedure.sql" />
+    <Resource Include="Resources\Icons\succesfull.png" />
+    <Resource Include="Resources\Icons\shop.png" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuel_supplies.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuel_suppliers.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuel_manufacturers.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuel_coming.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.columns_types.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.columns_fuel_types.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.stuffers.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.sex.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.posts.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_suppliers.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_stuffers.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_sex.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_posts.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_manufacturers.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_gas_columns.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_fuels_types.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_fuels_prices.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_fuels.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.get_fuel_count.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.gas_columns.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuels_prices.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuels.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuel_using.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuel_types.Table.sql" />
+    <None Include="Resources\MSSQL\GasStation\dbo.GasStation.fuel_supplies_content.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.get_products.StoredProcedure.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\GasStationShop.Database.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.units_expressions.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.units.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.sales_content.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.sales.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.products_units.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.products_types.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.products_supplies_content.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.products_supplies.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.products_suppliers.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.products.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.product_screens.Table.sql" />
+    <None Include="Resources\MSSQL\GasStationShop\dbo.product_prices.Table.sql" />
+    <Resource Include="Resources\Icons\close.png" />
+    <Resource Include="Resources\Icons\design.png" />
+    <Resource Include="Resources\Icons\login.gif" />
+    <Resource Include="Resources\Icons\gear.png" />
+    <Resource Include="Resources\Icons\behavior.png" />
+    <Resource Include="Resources\Icons\check.png" />
+    <Resource Include="Resources\Icons\gas station icon.png" />
+    <Resource Include="Resources\Icons\fail.png" />
+    <None Include="Resources\get_foreign_tables_StoredProcedure.sql" />
+    <None Include="Resources\get_columns_table_StoredProcedure.sql" />
+    <None Include="Resources\get_foreign_columns_StoredProcedure.sql" />
+    <Resource Include="Resources\Icons\edit.gif" />
+    <Resource Include="Resources\Icons\download.gif" />
+    <Resource Include="Resources\Icons\info.gif" />
+    <Resource Include="Resources\Icons\cancel.gif" />
+    <Resource Include="Resources\Icons\interface.ico" />
+    <Resource Include="Resources\Icons\menu.png" />
+    <Resource Include="Resources\Icons\minimize.png" />
+    <Resource Include="Resources\Icons\molecular.png" />
+    <Resource Include="Resources\Icons\password.gif" />
+    <Resource Include="Resources\Icons\tile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\MySQL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

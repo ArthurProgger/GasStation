@@ -3,10 +3,437 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:GasStation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="АЗС" Height="614.596" Width="1296.82"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        Icon="./Resources/Icons/gas station icon.png"
         
+        Background="#E6BC8E">
+    <Window.Resources>
+        <Style x:Key="pbStyle" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray5}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Control.Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Highlight}"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Maximum" Value="100"/>
+            <Setter Property="MinHeight" Value="10"/>
+            <Setter Property="MinWidth" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid x:Name="Root">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Determinate"/>
+                                    <VisualState x:Name="Indeterminate">
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="IndeterminateRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Visible</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="DeterminateRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Collapsed</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="X" Storyboard.TargetName="xTransform">
+                                                <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                <SplineDoubleKeyFrame KeyTime="0:0:0.35" Value="20"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border x:Name="PART_Track" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"/>
+                            <Grid x:Name="ProgressBarRootGrid">
+                                <Grid x:Name="IndeterminateRoot" Visibility="Collapsed">
+                                    <Rectangle x:Name="IndeterminateSolidFill" Fill="{DynamicResource MahApps.Brushes.Progress}" Margin="{TemplateBinding BorderThickness}" Opacity="1" RenderTransformOrigin="0.5,0.5" StrokeThickness="0"/>
+                                    <Rectangle x:Name="IndeterminateGradientFill" Margin="{TemplateBinding BorderThickness}" Opacity="0.7" StrokeThickness="1">
+                                        <Rectangle.Fill>
+                                            <LinearGradientBrush EndPoint="0,1" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="20,1">
+                                                <LinearGradientBrush.Transform>
+                                                    <TransformGroup>
+                                                        <TranslateTransform X="0"/>
+                                                        <SkewTransform AngleX="-30"/>
+                                                    </TransformGroup>
+                                                </LinearGradientBrush.Transform>
+                                                <GradientStop Color="{DynamicResource MahApps.Colors.ProgressIndeterminate1}" Offset="0"/>
+                                                <GradientStop Color="{DynamicResource MahApps.Colors.ProgressIndeterminate2}" Offset="0.651"/>
+                                                <GradientStop Color="{DynamicResource MahApps.Colors.ProgressIndeterminate3}" Offset="0.093"/>
+                                                <GradientStop Color="{DynamicResource MahApps.Colors.ProgressIndeterminate4}" Offset="0.548"/>
+                                            </LinearGradientBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </Grid>
+                                <Grid x:Name="DeterminateRoot" Margin="1">
+                                    <Border x:Name="PART_Indicator" Background="Brown" HorizontalAlignment="Left" Margin="-1">
+                                        <Rectangle x:Name="GradientFill" Opacity="0.7" Visibility="Collapsed">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush EndPoint="0,1" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="20,1">
+                                                    <LinearGradientBrush.Transform>
+                                                        <TransformGroup>
+                                                            <TranslateTransform X="0"/>
+                                                            <SkewTransform AngleX="-30"/>
+                                                        </TransformGroup>
+                                                    </LinearGradientBrush.Transform>
+                                                    <GradientStop Color="{DynamicResource MahApps.Colors.ProgressIndeterminate1}" Offset="0"/>
+                                                    <GradientStop Color="{DynamicResource MahApps.Colors.ProgressIndeterminate2}" Offset="0.651"/>
+                                                    <GradientStop Color="{DynamicResource MahApps.Colors.ProgressIndeterminate3}" Offset="0.093"/>
+                                                    <GradientStop Color="{DynamicResource MahApps.Colors.ProgressIndeterminate4}" Offset="0.548"/>
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Orientation" Value="Vertical">
+                                <Setter Property="LayoutTransform" TargetName="Root">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsIndeterminate" Value="True">
+                                <Setter Property="Visibility" TargetName="DeterminateRoot" Value="Collapsed"/>
+                                <Setter Property="Visibility" TargetName="IndeterminateRoot" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SwitchButt" TargetType="{x:Type ListViewItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border x:Name="Bd" CornerRadius="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                </MultiTrigger.Conditions>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                </MultiTrigger.Conditions>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid x:Name="upPanel" Height="30" VerticalAlignment="Top" MouseDown="UpPanel_MouseDown">
+
+            <Grid HorizontalAlignment="Right" Width="121">
+                <Label x:Name="close" Cursor="Hand" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="30" Margin="91,0,0,0" MouseDown="Close_MouseDown">
+                    <Image Source="/Resources/Icons/close.png" Height="10" Width="10"/>
+                </Label>
+                <Label x:Name="minimize" Cursor="Hand" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Width="30" Margin="61,0,30,0" MouseDown="Minimize_MouseDown">
+                    <Image Source="/Resources/Icons/minimize.png" Height="10" Width="10"/>
+                </Label>
+            </Grid>
+            <Grid HorizontalAlignment="Left">
+                <Label x:Name="title">АИС "Автозаправочная станция"</Label>
+            </Grid>
+        </Grid>
+        <Grid x:Name="content" Margin="0,30,0,0">
+            <Grid.Background>
+                <ImageBrush ImageSource="./Resources/Icons/gas station icon.png" Opacity="0.1" Stretch="Uniform"></ImageBrush>
+            </Grid.Background>
+            <ListView x:Name="menu" HorizontalAlignment="Left" Background="#925B21" SelectionChanged="Menu_SelectionChanged" Style="{DynamicResource lvStyle}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Width="174">
+                <ListViewItem x:Name="gasColumns" Background="{x:Null}" Padding="5" Style="{DynamicResource lviStyle}" Cursor="Hand">
+                    <Grid>
+                        <Image Width="20" HorizontalAlignment="Left" Source="/Resources/Icons/gas station icon.png"/>
+                        <Label FontSize="14" Foreground="White" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Padding="25 , 0" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Margin="0,0,-25,0" Content="Заправка"/>
+                    </Grid>
+                </ListViewItem>
+                <ListViewItem x:Name="shop" Padding="5" Style="{DynamicResource lviStyle}" Cursor="Hand">
+                    <Grid>
+                        <Image Width="20" HorizontalAlignment="Left" Source="/Resources/Icons/shop.png"/>
+                        <Label FontSize="14" Foreground="White" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Padding="25 , 0" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Margin="0,0,-25,0" Content="Магазин"/>
+                    </Grid>
+                </ListViewItem>
+                <ListViewItem x:Name="staffers" Padding="5" Style="{DynamicResource lviStyle}" Cursor="Hand">
+                    <Grid>
+                        <Image Width="20" HorizontalAlignment="Left" Source="/Resources/Icons/team.png"/>
+                        <Label FontSize="14" Foreground="White" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Padding="25 , 0" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,0,-25,0" Content="Сотрудники"/>
+                    </Grid>
+                </ListViewItem>
+            </ListView>
+            <Grid x:Name="tilesPage" Visibility="Hidden" Margin="179,0,0,10" Background="{x:Null}" HorizontalAlignment="Left" Width="884">
+                <TextBox x:Name="searchTiles" TextChanged="SearchTiles_TextChanged" FontSize="14" HorizontalAlignment="Left" Width="250" Margin="10" VerticalAlignment="Top" Padding="5" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light"  Height="26" Style="{DynamicResource tbStyle}"/>
+                <ListView x:Name="tiles" Visibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="{x:Null}" Margin="10,41,-18,10" HorizontalAlignment="Left" Width="892">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </Grid>
+
+
+            <Grid x:Name="gasColumnsInfo" Visibility="Hidden" Margin="179,0,0,10" HorizontalAlignment="Left" Width="892">
+                <Menu Background="{x:Null}" VerticalAlignment="Top">
+                    <MenuItem Click="MenuItem_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="Новая колонка"/>
+                    <!--<MenuItem x:Name="tableOfGasColumns" Click="TableOfGasColumns_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="Таблица колонок"/>-->
+                    <MenuItem x:Name="fuelingGasColumns" Click="FuelingGasColumns_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="Отчет по заправкам"/>
+                </Menu>
+                <ScrollViewer IsVisibleChanged="GasColumnsList_IsVisibleChanged" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Margin="0,38,0,0">
+                    <Grid x:Name="gasColumnsList">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="300"/>
+                        </Grid.RowDefinitions>
+
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+            <Grid x:Name="tanksInfo" IsVisibleChanged="TanksInfo_IsVisibleChanged" Visibility="Hidden" Margin="179,0,0,10" HorizontalAlignment="Left" Width="892">
+                <Menu VerticalAlignment="Top" Background="{x:Null}">
+                    <MenuItem x:Name="addTank"  FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Click="AddTank_Click" Background="{x:Null}" Header="Добавить тип топлива"/>
+                    <MenuItem x:Name="refuelTank" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Click="RefuelTank_Click" Background="{x:Null}" Header="Заправка резервуаров"/>
+                    <MenuItem x:Name="tableOfComings" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Click="TableOfComings_Click" Background="{x:Null}" Header="Отчет по заправкам резервуаров"/>
+                </Menu>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Margin="0,30,0,0">
+                    <Grid x:Name="tanksInfoContent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+            <Grid x:Name="editDataPage" Visibility="Hidden" IsVisibleChanged="EditDataPage_IsVisibleChanged" Margin="179,0,0,10" HorizontalAlignment="Left" Width="892">
+                <ScrollViewer Margin="25,25,25,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Height="230" VerticalAlignment="Top">
+                    <Grid x:Name="editDataPageContent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ScrollViewer>
+
+                <TabControl x:Name ="tablesPieces" Background="{x:Null}" Margin="10,255,10,35"/>
+                <Button x:Name="saveRow" Click="SaveRow_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="30" Height="30" FontSize="12">
+                    <Image Source="./Resources/Icons/save.png"/>
+                </Button>
+                <Button x:Name="addRow" Click="AddRow_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="30" Height="30" FontSize="12" Margin="0,0,35,0">+</Button>
+                <Button x:Name="dropRow" Click="DropRow_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="30" Height="30" FontSize="12">-</Button>
+                <ListView x:Name="additionalButtons" Background="{x:Null}" Height="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="35,0,70,0" Width="787">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </Grid>
+            <Grid x:Name="rowMoreInfo" Visibility="Hidden" Margin="179,0,10,10">
+                <ListView Background="{x:Null}">
+                    <ListViewItem Background="{x:Null}">
+                        <Grid>
+                            <Label VerticalContentAlignment="Center" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Medium" HorizontalAlignment="Left">Реквизит:</Label>
+                            <TextBox FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" Height="30" Width="250" HorizontalAlignment="Left" Margin="62,0,0,0" Style="{DynamicResource tbStyle}"></TextBox>
+                        </Grid>
+                    </ListViewItem>
+                    <ListViewItem Background="{x:Null}">
+                        <Grid>
+                            <Label VerticalContentAlignment="Center" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Medium" HorizontalAlignment="Left">Реквизит:</Label>
+                            <TextBox FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" Height="30" Width="250" HorizontalAlignment="Left" Margin="62,0,0,0" Style="{DynamicResource tbStyle}"></TextBox>
+                        </Grid>
+                    </ListViewItem>
+                    <ListViewItem Background="{x:Null}">
+                        <Grid>
+                            <Label VerticalContentAlignment="Center" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Medium" HorizontalAlignment="Left">Реквизит:</Label>
+                            <TextBox FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" Height="30" Width="250" HorizontalAlignment="Left" Margin="62,0,0,0" Style="{DynamicResource tbStyle}"></TextBox>
+                        </Grid>
+                    </ListViewItem>
+                    <ListViewItem Background="{x:Null}">
+                        <Grid>
+                            <Label VerticalContentAlignment="Center" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Medium" HorizontalAlignment="Left">Реквизит:</Label>
+                            <TextBox FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" Height="30" Width="250" HorizontalAlignment="Left" Margin="62,0,0,0" Style="{DynamicResource tbStyle}"></TextBox>
+                        </Grid>
+                    </ListViewItem>
+
+                </ListView>
+            </Grid>
+            <Grid x:Name="table" HorizontalAlignment="Left" Width="892" Visibility="Hidden" IsVisibleChanged="TablePage_IsVisibleChanged" Margin="179,0,0,10">
+                <TextBox x:Name="searchTables" TextChanged="SearchTables_TextChanged" FontSize="14" HorizontalAlignment="Left" Width="250" Margin="10" VerticalAlignment="Top" Padding="5" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light"  Height="26" Style="{DynamicResource tbStyle}"/>
+                <Menu HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" Margin="265,10,0,0" Width="250" Height="26">
+                    <MenuItem x:Name="filterTables" HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" Width="250" Height="26" Header="Фильтр"/>
+                </Menu>
+                <ScrollViewer x:Name="tableContent" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0,41,0,0">
+                    <Grid x:Name="tablePage"/>
+                </ScrollViewer>
+            </Grid>
+            <Grid x:Name="suppliesPage" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,10,10">
+                <TextBox x:Name="searchBox" FontSize="14" HorizontalAlignment="Left" Width="250" Margin="10" VerticalAlignment="Top" Padding="5" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light"  Height="26" Style="{DynamicResource tbStyle}"/>
+            </Grid>
+            <Grid x:Name="productInfoPage" IsVisibleChanged="ProductInfoPage_IsVisibleChanged" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,0,10" Width="884">
+                <!--<Label x:Name="backToEP" HorizontalAlignment="Left" VerticalAlignment="Top" MouseDown="BackToEP_MouseDown">&lt;Назад</Label>-->
+                <mah:FlipView x:Name="productsScreens" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Height="210" Width="500" BannerText="Токарный станок с копиром" Margin="0,40,0,0">
+                </mah:FlipView>
+                <ScrollViewer Width="379" Height="210" Margin="0,40,0,317" HorizontalAlignment="Right">
+                    <TextBlock x:Name="productDescription"  FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" />
+                </ScrollViewer>
+                <Label x:Name="productCount" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="30" Margin="10,255,0,0">В наличии</Label>
+                <Label x:Name="productPrice" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="30" Margin="10,305,0,0">Цена</Label>
+            </Grid>
+            <Grid x:Name="companiesPage" IsVisibleChanged="CompaniesPage_IsVisibleChanged" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,0,10" Width="884">
+                <Label x:Name="stuffersBack" MouseDown="StuffersBack_MouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" >&lt;Назад</Label>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,29,0,0">Поиск по базе ФНС:</Label>
+                <ComboBox x:Name="companiesList" SelectionChanged="CompaniesList_SelectionChanged" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="130,32,0,0" Width="210" IsEditable="True"></ComboBox>
+                <Button x:Name="searchCompanies" Click="SearchCompanies_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" Margin="345,32,0,0"></Button>
+                <Grid x:Name="compData" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,63,0,0">
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,31,0,0">Полное наименование:</Label>
+                    <TextBox x:Name="compFullName" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,31,0,0" Width="500"/>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0" Content="Краткое наименование:"/>
+                    <TextBox x:Name="compShortName" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,60,0,0" Width="500"/>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,89,0,0" Content="ИНН:"/>
+                    <mah:NumericUpDown x:Name="inn"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,89,0,0" Width="500" StringFormat="0000000000"></mah:NumericUpDown>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,118,0,0" Content="ОГРН:"/>
+                    <mah:NumericUpDown x:Name="ogrn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,118,0,0" Width="500" StringFormat="0000000000000"/>
+                </Grid>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,212,0,0" Content="Договор:"/>
+                <TextBox x:Name="contractPath" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,212,0,0" Width="500"/>
+                <Button x:Name="selectContractFile" Click="SelectContractFile_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" Margin="658,212,0,0"></Button>
+                <Button x:Name="saveCompData" Click="SaveCompData_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="30" Height="30">
+                    <Image Source="./Resources/Icons/save.png"/>
+                </Button>
+            </Grid>
+            <Grid x:Name="productNewSupp" IsVisibleChanged="ProductNewSupp_IsVisibleChanged" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,0,10" Width="884">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30">
+                    <Label HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top">Дата и время:</Label>
+                    <mah:DateTimePicker x:Name="prodSuppDateTime" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="94,0,0,0" Width="240"/>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,29,0,0">Поставщик:</Label>
+                    <ComboBox x:Name="productsSuppliers" HorizontalAlignment="Left" VerticalAlignment="Top" IsEditable="True" Margin="94,31,0,0" Width="240"/>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,58,0,0" Content="Сотрудники:"/>
+                    <ComboBox x:Name="stuffersList" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="94,61,0,0" Width="240"/>
+                </Grid>
+                <Grid VerticalAlignment="Bottom" Height="240" Margin="0,0,0,35" >
+                </Grid>
+                <Button x:Name="saveProductSupply" Click="SaveProductSupply_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="30" Height="30">
+                    <Image Source="/Resources/Icons/save.png" Stretch="Uniform"/>
+                </Button>
+            </Grid>
+            <Grid x:Name="fueling" IsVisibleChanged="Fueling_IsVisibleChanged" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,0,10" Width="884">
+                <Label x:Name="fuelingBack" MouseDown="FuelingBack_MouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" >&lt;Назад</Label>
+                <Label FontSize="20" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,29,0,0">Выберите тип топлива:</Label>
+                <ListView x:Name="fuelTypes" Background="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="874" Height="122" Margin="0,67,0,0">
+
+                </ListView>
+                <Label FontSize="20" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,194,0,0">Количество:</Label>
+                <Slider x:Name="fuelVolumeSlider" Minimum="0" ValueChanged="FuelVolumeValueChanged" HorizontalAlignment="Left" VerticalAlignment="Top" Width="874" Margin="0,232,0,0"/>
+                <mah:NumericUpDown x:Name="fuelVolume" FontSize="20"  Minimum="0" HorizontalAlignment="Left" ValueChanged="FuelVolume_ValueChanged" VerticalAlignment="Top" Margin="0,290,0,0" Width="200"/>
+                <Button x:Name="saveFueling" Click="SaveFueling_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="30" Height="30">
+                    <Image Source="/Resources/Icons/save.png" Stretch="Uniform"/>
+                </Button>
+                <Label x:Name="fuelSummaryL" FontSize="20" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="563,290,0,0">Стоимость:</Label>
+                <mah:NumericUpDown x:Name="fuelSummary" IsReadOnly="True" FontSize="20"  Minimum="0" HorizontalAlignment="Left" ValueChanged="FuelVolume_ValueChanged" VerticalAlignment="Top" Margin="684,290,0,0" Width="200"/>
+            </Grid>
+            <Grid x:Name="stuffers" IsVisibleChanged="Stuffers_IsVisibleChanged" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,0,10" Width="884">
+                <Label x:Name="stuffersBack1" MouseDown="StuffersBack1_MouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" >&lt;Назад</Label>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,78,0,0">Фамилия:</Label>
+                <TextBox x:Name="stuffLastName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,78,0,0"/>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Имя:" Margin="0,110,0,0"/>
+                <TextBox  x:Name="stuffFirstName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,111,0,0"/>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Отчество:" Margin="0,141,0,0"/>
+                <TextBox  x:Name="stuffMiddleName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,142,0,0"/>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Дата рождения:" Margin="0,173,0,0"/>
+                <DatePicker  x:Name="stuffBirth" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="128,174,0,0"/>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Пол:" Margin="0,205,0,0"/>
+                <ComboBox   x:Name="stuffSex" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,206,0,0"/>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Договор:" Margin="0,236,0,0"/>
+                <TextBox   x:Name="stuffFile" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="539" Margin="127,237,0,0"/>
+                <Button x:Name="stuffLoadFile" Click="StuffLoadFile_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" Margin="671,236,0,0">
+                    <Image gif:AnimationBehavior.SourceUri="Resources/Icons/download.gif"/>
+                </Button>
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Должность:" Margin="0,270,0,0"/>
+                <ComboBox   x:Name="stuffPost" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,268,0,0"/>
+                <GroupBox Header="Паспортные данные" Margin="0,302,0,35">
+                    <Grid>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Серия паспорта:" />
+                        <mah:NumericUpDown   x:Name="stuffSeriesPass"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,1,0,0" Width="260"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Номер паспорта:" Margin="-1,27,0,0"/>
+                        <mah:NumericUpDown   x:Name="stuffNumPass"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,28,0,0" Width="260"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Кем выдан:" Margin="-1,54,0,0"/>
+                        <TextBox x:Name="stuffWhoGived" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,59,0,0" Width="711" Height="61"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Дата выдачи:" Margin="0,128,0,0"/>
+                        <DatePicker x:Name="stuffTakeDate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,125,0,0" Width="260"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Код подразделения:" Margin="-1,155,0,0" Width="154"/>
+                        <mah:NumericUpDown x:Name="stuffDepCode" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,156,0,0" Width="260"/>
+                    </Grid>
+                </GroupBox>
+                <Button x:Name="saveStuffer" Click="SaveStuffer_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="30" Height="30">
+                    <Image Source="/Resources/Icons/save.png"/>
+                </Button>
+            </Grid>
+            <Grid x:Name="basket" IsVisibleChanged="Basket_IsVisibleChanged" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,0,10" Width="884">
+
+                <Label x:Name="basketBack" MouseDown="BasketBack_MouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" >&lt;Назад</Label>
+                <TextBox x:Name="searchProductsSales" TextChanged="SearchProductsSales_TextChanged" FontSize="14" HorizontalAlignment="Left" Width="250" Margin="10,24,0,0" VerticalAlignment="Top" Padding="5" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light"  Height="26" Style="{DynamicResource tbStyle}"/>
+                <Menu HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" Margin="265,24,0,0" Width="250" Height="26">
+                    <MenuItem x:Name="filterProductsSales"  HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" Width="250" Height="26" Header="Фильтр"/>
+                </Menu>
+                <ScrollViewer x:Name="productsSalesSV" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0,55,369,0">
+                    <Grid x:Name="productsSales" Margin="0,55,0,0"/>
+                </ScrollViewer>
+                <ListView x:Name="basketContent" HorizontalAlignment="Right" Width="354" Margin="0,55,0,200"/>
+                <Label x:Name="basketSuppliersL" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,372,261,0">Поставщик:</Label>
+                <ComboBox x:Name="basketSuppliers" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,399,10,0" Width="344"/>
+                <Button x:Name="buy" Click="Buy_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="30" Height="30">
+                    <Image Source="/Resources/Icons/save.png"/>
+                </Button>
+            </Grid>
+            <Grid x:Name="shopMenu" IsVisibleChanged="ShopMenu_IsVisibleChanged" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,0,10" Width="884">
+                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15">Добавление:</Label>
+                <ListView HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,32,10,0">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListViewItem Width="220" Height="120" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic"/>
+                    <ListViewItem Width="220" Height="120" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic"/>
+                </ListView>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
+
+<!--#925B21-->
