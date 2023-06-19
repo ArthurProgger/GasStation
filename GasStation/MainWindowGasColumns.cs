@@ -18,6 +18,8 @@ namespace GasStation
     {
         private void GasColumnsList_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            addGasColumn.Visibility = App.SystemConfigs.Login.Contains("tanker") ? Visibility.Hidden : Visibility.Visible;
+
             if (gasColumnsInfo.Visibility == Visibility.Visible)
             {
                 try
@@ -166,8 +168,17 @@ namespace GasStation
             }
         }
 
-        private async void MenuItem_Click(object sender, RoutedEventArgs e) => await EditPageLoad("gas_columns", new List<string> { }, false, true);
+        private async void MenuItem_Click(object sender, RoutedEventArgs e) => await EditPageLoad("gas_columns", new List<string>(), true, true, null, new Dictionary<string, RoutedEventHandler> { { "back_arrow", new RoutedEventHandler(async (object obj, RoutedEventArgs rea) => await App.OpenFunction(gasColumnsInfo, tiles, Width - menu.ActualWidth)) } });
         private async void TableOfGasColumns_Click(object sender, RoutedEventArgs e) => await TablePageLoad("gas_columns", true, true, false, QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter("exec [get_gas_columns]", App.SystemConfigs.ConnectionStr)));
-        private async void FuelingGasColumns_Click(object sender, RoutedEventArgs e) => await TablePageLoad("fuel_using", true, false, true, QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter("exec [get_fuelings]", App.SystemConfigs.ConnectionStr)));
+        private async void FuelingGasColumns_Click(object sender, RoutedEventArgs e) => await TablePageLoad("fuel_using", true, false, true, QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter("exec [get_fuelings]", App.SystemConfigs.ConnectionStr)), null, new Dictionary<string, RoutedEventHandler> { { "back_arrow", new RoutedEventHandler(async (object obj, RoutedEventArgs rea) => await App.OpenFunction(gasColumnsInfo, tiles, Width - menu.ActualWidth)) } });
+
+        private async void BackGasStation_Click(object sender, RoutedEventArgs e)
+        {
+            App.SystemConfigs.ConnectionStr = "GasStation";
+            if (App.SystemConfigs.UseWin8TilesStyle)
+                await App.OpenFunction(tilesPage, menu, Width - menu.ActualWidth, new Action(LoadTilesOfGasStation<Tile>));
+            else
+                await App.OpenFunction(tilesPage, menu, Width - menu.ActualWidth, new Action(LoadTilesOfGasStation<ListViewItem>));
+        }
     }
 }

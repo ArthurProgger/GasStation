@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Diagnostics;
 using System.Windows;
+using SD = System.Drawing;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
@@ -28,7 +29,6 @@ using pdf = Syncfusion.Pdf;
 using xps = Syncfusion.XPS;
 using System.Windows.Xps.Packaging;
 using System.Windows.Documents;
-using System.Printing;
 
 namespace GasStation
 {
@@ -42,6 +42,7 @@ namespace GasStation
             InitializeComponent();
             //AddHandler(MouseDownEvent, new MouseButtonEventHandler(UpPanel_MouseDown), true);
 
+            App.Content = content;
             content.Background = new SolidColorBrush(App.SystemConfigs.MainColor);
             menu.Background = new SolidColorBrush(App.SystemConfigs.FunctionsColor);
 
@@ -52,6 +53,7 @@ namespace GasStation
 
             //Вторичные таблицы
             _foreignTables.Add("fuels", new string[] { "fuels_prices" });
+            _foreignTables.Add("fuel_types", new string[0]);
             _foreignTables.Add("products", new string[0]);
             _foreignTables.Add("stuffers", new string[0]);
             _foreignTables.Add("fuel_suppliers", new string[0]);
@@ -59,8 +61,33 @@ namespace GasStation
             _foreignTables.Add("gas_columns", new string[] { "gas_columns_fuel_types" });
             _foreignTables.Add("products_types", new string[0]);
 
-            DataTable t = QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter($"exec get_login_full_name '{App.SystemConfigs.Login}'", App.SystemConfigs.ConnectionStr));
-            _userFullName = t.Rows.Count > 0 ? (string)t.Rows[0][0] : null;
+            try
+            {
+                DataTable t = QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter($"exec get_login_full_name '{App.SystemConfigs.Login}'", App.SystemConfigs.ConnectionStr));
+                _userFullName = t.Rows.Count > 0 ? (string)t.Rows[0][0] : null;
+                fuelStuffName.Content = $"Сотрудник: {_userFullName}";
+
+                if (App.SystemConfigs.Login.Contains("saler"))
+                {
+                    menu.Items.RemoveAt(0);
+                    menu.Items.RemoveAt(1);
+                }
+                else if (App.SystemConfigs.Login.Contains("tanker"))
+                {
+                    menu.Items.RemoveAt(1);
+                    menu.Items.RemoveAt(1);
+                }
+            }
+            catch (Exception err)
+            {
+                SideMessage.Show(Content as Grid, err.Message, SideMessage.Type.Error, Position.Right);
+            }
+        }
+
+        public string GetUserRole(string user)
+        {
+
+            return null;
         }
 
         private void LoadSynonyms(string path)
@@ -98,13 +125,13 @@ namespace GasStation
         {
             Yes = (object s, RoutedEventArgs reh) =>
             {
-                _openedFiles.ForEach((Process p) =>
-                {
-                    p.Kill();
-                    p.Dispose();
-                });
-                Thread.Sleep(3000);
-                Directory.GetFiles(new DirectoryInfo(".").FullName).Where(fn => fn.Contains(_cacheFileName)).ToList().ForEach((string fn) => File.Delete(fn));
+                //_openedFiles.ForEach((Process p) =>
+                //{
+                //    p.Kill();
+                //    p.Dispose();
+                //});
+                //Thread.Sleep(3000);
+                //Directory.GetFiles(new DirectoryInfo(".").FullName).Where(fn => fn.Contains(_cacheFileName)).ToList().ForEach((string fn) => File.Delete(fn));
                 Application.Current.Shutdown();
             }
         });
@@ -183,13 +210,15 @@ namespace GasStation
             return conn;
         }
 
-        private void GenerateTable(Grid content, string tableName, string[] columns, bool readOnly, bool editable, bool savePdf, DataTable data = null, RoutedEventHandler editClick = null)
+        private void GenerateTable(Grid content, string tableName, string[] columns, bool readOnly, bool editable, bool savePdf, DataTable data = null, RoutedEventHandler editClick = null, Dictionary<string, RoutedEventHandler> additionalButtonsTable = null)
         {
             if (_dataTable == null)
                 _dataTable = data;
 
             if (this.content.Children.Contains(_savePdfButton))
                 this.content.Children.Remove(_savePdfButton);
+
+            _editClick = editClick;
 
             _editable = editable;
             _savePdf = savePdf;
@@ -238,7 +267,7 @@ namespace GasStation
             };
 
             content.Children.Add(sv);
- 
+
             AddingColumns((Grid)sv.Content, tableName, columnsOfData.ToArray(), false, readOnly);
 
             if (data != null)
@@ -317,6 +346,36 @@ namespace GasStation
                     }
                 });
                 this.content.Children.Add(_savePdfButton);
+            }
+
+            if (additionalButtonsTable != null)
+            {
+                additionalButtonsTable.ToList().ForEach((KeyValuePair<string, RoutedEventHandler> kvp) =>
+                {
+                    PropertyInfo prop = typeof(Properties.Resources).GetProperties(BindingFlags.Static | BindingFlags.NonPublic).Where(p => kvp.Key.Contains(p.Name)).ToArray()[0];
+                    SD.Bitmap bm = (SD.Bitmap)prop.GetValue(prop);
+
+                    Button butt = new Button
+                    {
+                        Height = 30,
+                        Width = 30,
+                        Content = new Image
+                        {
+                            Stretch = Stretch.Uniform,
+                            Source = kvp.Key.Contains(".gif") ? null : Imaging.CreateBitmapSourceFromHBitmap(
+                                       bm.GetHbitmap(),
+                                       IntPtr.Zero,
+                                       Int32Rect.Empty,
+                                       BitmapSizeOptions.FromEmptyOptions()),
+                        }
+                    };
+                    if (((Image)butt.Content).Source == null)
+                        AnimationBehavior.SetSourceUri((Image)butt.Content, new Uri(kvp.Key));
+
+                    butt.Click += new RoutedEventHandler(kvp.Value);
+                    this.additionalButtonsTable.Items.Add(butt);
+                });
+                _additionalButtonsTable = additionalButtonsTable;
             }
         }
 
@@ -446,9 +505,21 @@ namespace GasStation
                         ((DatePicker)b.Child).SelectedDate = DateTime.Parse(o.ToString());
                     else
                     {
-                        string value;
+                        string value = null;
                         if (_columnsTypes.ContainsKey(tableName))
-                            value = _columnsTypes[tableName].StrColumns.Contains(colName) ? o.ToString() : o.ToString().Replace(',', '.');
+                        {
+                            if (o is double || o is decimal)
+                                value = double.Parse(o.ToString()).ToString("0.00").Replace(',', '.');
+                            else if (o is DateTime)
+                            {
+                                if (((DateTime)o).Hour == 0 && ((DateTime)o).Minute == 0 && ((DateTime)o).Second == 0)
+                                    value = DateTime.Parse(o.ToString()).ToString("dd.MM.yyyy");
+                                else
+                                    value = o.ToString();
+                            }
+                            else
+                                value = o.ToString();
+                        }
                         else
                             value = o.ToString();
                         b.Child.GetType().GetProperty("Text").SetValue(b.Child, value);
@@ -483,12 +554,9 @@ namespace GasStation
                     {
                         Width = 30,
                         Height = 30,
-                        Content = new Image
-                        {
-                            Stretch = Stretch.Uniform
-                        }
+                        Content = "..."
                     };
-                    AnimationBehavior.SetSourceUri((Image)butt.Content, new Uri("pack://application:,,,/Resources/Icons/edit.gif"));
+                    //AnimationBehavior.SetSourceUri((Image)butt.Content, new Uri("pack://application:,,,/Resources/Icons/edit.gif"));
                     ((Grid)((Label)b.Child).Content).Children.Add(butt);
                     butt.Click += editClick ?? new RoutedEventHandler(async (object obj, RoutedEventArgs e) =>
                     {
@@ -529,7 +597,7 @@ namespace GasStation
                             container.RowDefinitions.RemoveAt(rIndex);
                         }
                         else
-                            SideMessage.Show(Content as Grid, "Удалить запись?", SideMessage.Type.Error, Position.Right, new SideMessage.Behaviors
+                            SideMessage.Show(Content as Grid, "Удалить запись?", SideMessage.Type.Warning, Position.Right, new SideMessage.Behaviors
                             {
                                 Yes = new RoutedEventHandler((object sender, RoutedEventArgs rea) =>
                                 {
@@ -698,7 +766,7 @@ namespace GasStation
             await App.OpenFunction(editDataPage, tiles, Width - menu.ActualWidth);
         }
 
-        private async Task TablePageLoad(string tableName, bool readOnly, bool editable, bool savePdf, DataTable t = null, RoutedEventHandler editClick = null)
+        private async Task TablePageLoad(string tableName, bool readOnly, bool editable, bool savePdf, DataTable t = null, RoutedEventHandler editClick = null, Dictionary<string, RoutedEventHandler> additionalButtons = null)
         {
             _columnsTypes.Clear();
             _tableName = tableName;
@@ -735,7 +803,7 @@ namespace GasStation
             }
             else
                 t.Columns.Cast<DataColumn>().ToList().ForEach((DataColumn c) => columns.Add(c.ColumnName));
-            await App.OpenFunction(table, tiles, Width - menu.ActualWidth, new Action<Grid, string, string[], bool, bool, bool, DataTable, RoutedEventHandler>(GenerateTable), new object[] { tablePage, tableName, columns.ToArray(), readOnly, editable, savePdf, t, editClick });
+            await App.OpenFunction(table, tiles, Width - menu.ActualWidth, new Action<Grid, string, string[], bool, bool, bool, DataTable, RoutedEventHandler, Dictionary<string, RoutedEventHandler>>(GenerateTable), new object[] { tablePage, tableName, columns.ToArray(), readOnly, editable, savePdf, t, editClick, additionalButtons});
         }
 
         //Открытие файла из бд
@@ -780,13 +848,20 @@ namespace GasStation
 
                 value = string.IsNullOrEmpty(value) ? "NULL" : value;
                 if (_editable)
-                    where += kvp.Value.StrColumns.Contains(colName) || kvp.Value.DateTimeColumns.Contains(colName) || kvp.Value.DateColumns.Contains(colName) || kvp.Value.TimeColumns.Contains(colName) ? $"{uie.Key.GetType().GetProperty("ToolTip").GetValue(uie.Key)} = '{value}' and " : $"{uie.Key.GetType().GetProperty("ToolTip").GetValue(uie.Key)} = {value} and ";
+                    where += !string.Equals(value.ToUpper(), "NULL") && (kvp.Value.StrColumns.Contains(colName) || kvp.Value.DateTimeColumns.Contains(colName) || kvp.Value.DateColumns.Contains(colName) || kvp.Value.TimeColumns.Contains(colName)) ? $"{uie.Key.GetType().GetProperty("ToolTip").GetValue(uie.Key)} = '{value}' and " : $"{uie.Key.GetType().GetProperty("ToolTip").GetValue(uie.Key)} = {value} and ";
             });
 
             if (where != null)
             {
                 where = where.Substring(0, where.Length - 4);
-                Query(new SqlCommand($"DELETE FROM {kvp.Key} WHERE {where}", conn as SqlConnection));
+                try
+                {
+                    Query(new SqlCommand($"DELETE FROM {kvp.Key} WHERE {where}", conn as SqlConnection));
+                }
+                catch (Exception err)
+                {
+                    SideMessage.Show(Content as Grid, err.Message, SideMessage.Type.Error, Position.Right);
+                }
             }
         });
 

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Diagnostics;
 using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using SWF = System.Windows.Forms;
 using System.Windows.Input;
 using System.Data;
 using System.Data.SqlClient;
@@ -53,7 +56,30 @@ namespace GasStation
 
                     _stuffId = int.Parse(values[0]);
                     await App.OpenFunction(stuffers, menu, Width - menu.ActualWidth);
-                }));
+                }), new Dictionary<string, RoutedEventHandler> { { "back_arrow.png", new RoutedEventHandler(async (object obj, RoutedEventArgs rea) =>
+                {
+                    if (App.SystemConfigs.UseWin8TilesStyle)
+                        await App.OpenFunction(tilesPage, menu, Width - menu.ActualWidth, new Action(LoadTilesOfStuffers<Tile>));
+                    else
+                        await App.OpenFunction(tilesPage, menu, Width - menu.ActualWidth, new Action(LoadTilesOfStuffers<ListViewItem>));
+                }) },
+                    { "write", new RoutedEventHandler((object obj, RoutedEventArgs rea) =>
+                    {
+                        // Шаблон трудового договора
+
+                        SWF.SaveFileDialog sfd = new SWF.SaveFileDialog
+                        {
+                            Filter = "Документ Word|*.docx"
+                        };
+                        sfd.ShowDialog();
+                        if (!string.IsNullOrEmpty(sfd.FileName))
+                        {
+                            using (BinaryWriter bw = new BinaryWriter(File.Open(sfd.FileName, FileMode.CreateNew)))
+                                bw.Write(Properties.Resources.Шаблон_трудового_договора, 0 , Properties.Resources.Шаблон_трудового_договора.Length);
+
+                            Process.Start(sfd.FileName);
+                        }
+                    }) } });
             }));
 
             _tilesCollection.ToList().ForEach((KeyValuePair<ContentControl, MouseButtonEventHandler> a) =>

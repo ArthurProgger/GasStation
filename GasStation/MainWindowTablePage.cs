@@ -20,6 +20,7 @@ namespace GasStation
                 _dataTable = null;
                 title.Content = _AppName;
                 _columnsTypes.Clear();
+                _additionalButtonsTable.Clear();
                 ClearTable(tablePage);
             }
         }
@@ -43,7 +44,7 @@ namespace GasStation
             }
             ClearTable(content);
             _columnsTypes.Clear();
-            GenerateTable(content, _tableName, new string[0], true, _editable, _savePdf, data);
+            GenerateTable(content, _tableName, new string[0], true, _editable, _savePdf, data, _editClick, _additionalButtonsTable);
         }
 
         private void ClearTable(Grid content)
@@ -52,6 +53,7 @@ namespace GasStation
             content.ColumnDefinitions.Clear();
             content.RowDefinitions.Clear();
             _rowsOfTables.Clear();
+            additionalButtonsTable.Items.Clear();
         }
     }
 }

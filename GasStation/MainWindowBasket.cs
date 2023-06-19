@@ -6,10 +6,7 @@ using System.Windows.Media;
 using System.Windows.Interop;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -35,6 +32,10 @@ namespace GasStation
 
                     basketSuppliersL.Visibility = _isSale ? Visibility.Hidden : Visibility.Visible;
                     basketSuppliers.Visibility = _isSale ? Visibility.Hidden : Visibility.Visible;
+                    basketSummL.Visibility = _isSale ? Visibility.Visible : Visibility.Hidden;
+                    basketSumm.Visibility = _isSale ? Visibility.Visible : Visibility.Hidden;
+                    basketRub.Visibility = _isSale ? Visibility.Visible : Visibility.Hidden;
+
                     if (!_isSale)
                     {
                         t = QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter("exec get_suppliers", App.SystemConfigs.ConnectionStr));
@@ -48,6 +49,7 @@ namespace GasStation
             }
             else
             {
+                basketSumm.Clear();
                 productsSales.Children.Clear();
                 productsSales.RowDefinitions.Clear();
                 productsSales.ColumnDefinitions.Clear();
@@ -122,7 +124,7 @@ namespace GasStation
                 {
                     if (_isSale)
                     {
-                        Query(new SqlCommand($"INSERT INTO sales VALUES ('{DateTime.Now}', NULL)", GetConnectionObj<SqlConnection>()));
+                        Query(new SqlCommand($"INSERT INTO sales VALUES ('{DateTime.Now}', '{_userFullName}', {basketSumm.Text})", GetConnectionObj<SqlConnection>()));
                         int id = int.Parse(QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter("exec get_last_index_of_sale", App.SystemConfigs.ConnectionStr)).Rows[0][0].ToString());
 
                         basketContent.Items.Cast<ListViewItem>().ToList().ForEach((ListViewItem lvi) =>
@@ -249,10 +251,10 @@ namespace GasStation
                             if (_isSale)
                             {
                                 DataTable t = QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter($"exec get_prod_count {((TextBlock)row.ToArray()[0].Child).Text}", App.SystemConfigs.ConnectionStr));
-                                if ((int)t.Rows[0][0] == 0)
+                                if ((int)t.Rows[0][1] == 0)
                                     throw new Exception("Товара нет на складе!");
                                 else
-                                    count = (int)t.Rows[0][0];
+                                    count = (int)t.Rows[0][1];
                             }
 
                             basketContent.Items.Add(lvi);
@@ -265,12 +267,17 @@ namespace GasStation
                                 Content = $"{((TextBlock)row.ToArray()[0].Child).Text}, {((TextBlock)row.ToArray()[1].Child).Text}"
                             });
 
-                            ((Grid)((ListViewItem)basketContent.Items[basketContent.Items.Count - 1]).Content).Children.Add(new NumericUpDown
+                            NumericUpDown nud = new NumericUpDown
                             {
                                 Margin = new Thickness(200, 0, 31, 0),
                                 Minimum = 1,
+                                StringFormat = "0",
+                                Value = 1,
                                 Maximum = count == -1 ? 1000 : count
-                            });
+                            };
+                            nud.ValueChanged += new RoutedPropertyChangedEventHandler<double?>((object obj1, RoutedPropertyChangedEventArgs<double?> rea1) => CalculateSum());
+                            ((Grid)((ListViewItem)basketContent.Items[basketContent.Items.Count - 1]).Content).Children.Add(nud);
+
                             Button butt = new Button
                             {
                                 HorizontalAlignment = HorizontalAlignment.Right,
@@ -278,7 +285,11 @@ namespace GasStation
                                 Content = "X"
                             };
                             ((Grid)((ListViewItem)basketContent.Items[basketContent.Items.Count - 1]).Content).Children.Add(butt);
-                            butt.Click += new RoutedEventHandler((object obj1, RoutedEventArgs rea1) => basketContent.Items.Remove(lvi));
+                            butt.Click += new RoutedEventHandler((object obj1, RoutedEventArgs rea1) =>
+                            {
+                                basketContent.Items.Remove(lvi);
+                                CalculateSum();
+                            });
                         }
                         catch (Exception err)
                         {
@@ -302,6 +313,28 @@ namespace GasStation
                 await App.OpenFunction(tilesPage, menu, Width - menu.ActualWidth, new Action(LoadTilesOfGasStationShop<Tile>));
             else
                 await App.OpenFunction(tilesPage, menu, Width - menu.ActualWidth, new Action(LoadTilesOfGasStationShop<ListViewItem>));
+        }
+
+        private void CalculateSum()
+        {
+            decimal summValue = 0;
+            basketContent.Items.Cast<ListViewItem>().ToList().ForEach((ListViewItem lvi1) =>
+            {
+                int prodId = int.Parse(((Label)((Grid)lvi1.Content).Children[0]).Content.ToString().Substring(0, ((Label)((Grid)lvi1.Content).Children[0]).Content.ToString().IndexOf(',')));
+
+                try
+                {
+                    DataTable t = QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter($"exec get_prod_price {prodId}", App.SystemConfigs.ConnectionStr));
+                    int prodCount = (int)((NumericUpDown)((Grid)lvi1.Content).Children[1]).Value.Value;
+
+                    summValue += (decimal)t.Rows[0][0] * prodCount;
+                }
+                catch (Exception err)
+                {
+                    SideMessage.Show(Content as Grid, err.Message, SideMessage.Type.Error, Position.Right);
+                }
+            });
+            basketSumm.Text = summValue.ToString("0.00").Replace(',', '.');
         }
     }
 }

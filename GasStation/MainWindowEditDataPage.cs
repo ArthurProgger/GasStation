@@ -1,4 +1,5 @@
 ﻿using System;
+using SD = System.Drawing;
 using System.Reflection;
 using System.IO;
 using System.Windows;
@@ -269,7 +270,9 @@ namespace GasStation
                     if (_additionalButtons != null)
                         _additionalButtons.ToList().ForEach((KeyValuePair<string, RoutedEventHandler> kvp) =>
                         {
-                            object prop = typeof(Properties.Resources).GetProperties(BindingFlags.Static | BindingFlags.NonPublic).Where(p => kvp.Key.Contains(p.Name)).ToArray()[0];
+                            PropertyInfo prop = typeof(Properties.Resources).GetProperties(BindingFlags.Static | BindingFlags.NonPublic).Where(p => kvp.Key.Contains(p.Name)).ToArray()[0];
+                            SD.Bitmap bm = (SD.Bitmap)prop.GetValue(prop);
+
                             Button butt = new Button
                             {
                                 Height = 30,
@@ -278,16 +281,16 @@ namespace GasStation
                                 {
                                     Stretch = Stretch.Uniform,
                                     Source = kvp.Key.Contains(".gif") ? null : Imaging.CreateBitmapSourceFromHBitmap(
-                                       (IntPtr)prop.GetType().GetMethod("GetHbitmap").Invoke(prop, new object[0]),
-                                       IntPtr.Zero,
-                                       Int32Rect.Empty,
-                                       BitmapSizeOptions.FromEmptyOptions()),
+                                               bm.GetHbitmap(),
+                                               IntPtr.Zero,
+                                               Int32Rect.Empty,
+                                               BitmapSizeOptions.FromEmptyOptions()),
                                 }
                             };
                             if (((Image)butt.Content).Source == null)
                                 AnimationBehavior.SetSourceUri((Image)butt.Content, new Uri(kvp.Key));
 
-                            butt.Click += kvp.Value;
+                            butt.Click += new RoutedEventHandler(kvp.Value);
                             additionalButtons.Items.Add(butt);
                         });
                 }

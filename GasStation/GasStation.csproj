@@ -219,6 +219,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\Fonts\Gilroy\Gilroy-Black.eot" />
+    <None Include="Resources\Templates documents\Шаблон договора с поставщиками.docx" />
+    <None Include="Resources\Templates documents\Шаблон трудового договора.docx" />
     <Resource Include="Resources\Fonts\Gilroy\Gilroy-Black.ttf" />
     <None Include="Resources\Fonts\Gilroy\Gilroy-Black.woff" />
     <None Include="Resources\Fonts\Gilroy\Gilroy-BlackItalic.eot" />
@@ -283,8 +285,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Icons\count.png" />
+    <Resource Include="Resources\Icons\sale.png" />
+    <Resource Include="Resources\Icons\add-type.png" />
+    <Resource Include="Resources\Icons\write.png" />
+    <Resource Include="Resources\Icons\back arrow.png" />
+    <Resource Include="Resources\Icons\no-photos.png" />
     <Resource Include="Resources\Icons\supp_add.png" />
-    <Resource Include="supp_add.png" />
     <Resource Include="Resources\Icons\add supply.png" />
     <Resource Include="Resources\Icons\product-range.png" />
     <Resource Include="Resources\Icons\add-product.png" />

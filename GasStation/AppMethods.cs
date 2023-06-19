@@ -51,27 +51,17 @@ namespace GasStation
         // анимация выбора пункта меню
         private static FrameworkElement _lastFunctionContent;
         public static FrameworkElement LastFunctionContent => _lastFunctionContent;
+        public static Grid Content { get; set; }
         public static async Task OpenFunction<T>(T currentFunction, ListView menuList, double toWidth, Delegate method = null, params object[] args) where T : FrameworkElement
         {
             double w = 15;
 
             menuList.IsEnabled = false;
+            Content.IsEnabled = false;
 
             if (_lastFunctionContent != null)
             {
-                switch (_lastFunctionContent.Name)
-                {
-                    case "tablePage":
-                        {
-                            w = 50;
-                            break;
-                        }
-                    default:
-                        {
-                            w = 15;
-                            break;
-                        }
-                }
+                w = _lastFunctionContent.Name == "tablePage" || _lastFunctionContent.Name == "stuffers" || _lastFunctionContent.Name == "tanksInfo" ? 50 : 15;
 
                 _lastFunctionContent.HorizontalAlignment = HorizontalAlignment.Left;
                 _lastFunctionContent.Width = toWidth - w;
@@ -102,6 +92,7 @@ namespace GasStation
             _pagesHistory.Add(_lastFunctionContent);
 
             menuList.IsEnabled = true;
+            Content.IsEnabled = true;
         }
 
         // открытие страницы (закрытие остальных)
@@ -164,7 +155,7 @@ namespace GasStation
                     string result = streamReader.ReadToEnd();
                     JContainer data = (JContainer)JsonConvert.DeserializeObject(result);
 
-                    foreach (JObject j in data["items"])
+                    data["items"].Cast<JObject>().ToList().ForEach((JObject j) =>
                     {
                         if (j.ContainsKey("ЮЛ"))
                             _companies.Add(j["ЮЛ"].ToObject<FTSCompanyData>());
@@ -172,7 +163,7 @@ namespace GasStation
                             _companies.Add(j["ИП"].ToObject<FTSCompanyData>());
                         else
                             _companies.Add(j["НР"].ToObject<FTSCompanyData>());
-                    }
+                    });
                 }
 
                 _companies.ForEach((FTSCompanyData comp) => cb.Items.Add(comp.НаимПолнЮЛ));

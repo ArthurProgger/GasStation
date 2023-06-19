@@ -20,7 +20,8 @@ namespace GasStation
         private string[] _filesTypes = { "png", "jpeg", "jpg", "doc", "docx", "txt" };
         private Button _savePdfButton;
         private DataTable _dataTable;
-        private Dictionary<string, RoutedEventHandler> _additionalButtons;
+        private Dictionary<string, RoutedEventHandler> _additionalButtons, _additionalButtonsTable;
+        private RoutedEventHandler _editClick;
         private List<string> _productData = new List<string>();
         private List<Process> _openedFiles = new List<Process>();
         private Dictionary<string, Dictionary<UIElement, string>> _rowsOfTables = new Dictionary<string, Dictionary<UIElement, string>>();

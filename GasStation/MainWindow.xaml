@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GasStation"
         mc:Ignorable="d"
         Title="АЗС" Height="614.596" Width="1296.82"
@@ -155,7 +156,7 @@
     </Window.Resources>
     <Grid>
         <Grid x:Name="upPanel" Height="30" VerticalAlignment="Top" MouseDown="UpPanel_MouseDown">
-
+            <Label x:Name="fuelStuffName" FontSize="15" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Right" Margin="0,0,126,0"/>
             <Grid HorizontalAlignment="Right" Width="121">
                 <Label x:Name="close" Cursor="Hand" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="30" Margin="91,0,0,0" MouseDown="Close_MouseDown">
                     <Image Source="/Resources/Icons/close.png" Height="10" Width="10"/>
@@ -206,7 +207,8 @@
 
             <Grid x:Name="gasColumnsInfo" Visibility="Hidden" Margin="179,0,0,10" HorizontalAlignment="Left" Width="892">
                 <Menu Background="{x:Null}" VerticalAlignment="Top">
-                    <MenuItem Click="MenuItem_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="Новая колонка"/>
+                    <MenuItem x:Name="backGasStation" Click="BackGasStation_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="&lt;Назад"/>
+                    <MenuItem x:Name="addGasColumn" Click="MenuItem_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="Новая колонка"/>
                     <!--<MenuItem x:Name="tableOfGasColumns" Click="TableOfGasColumns_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="Таблица колонок"/>-->
                     <MenuItem x:Name="fuelingGasColumns" Click="FuelingGasColumns_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="Отчет по заправкам"/>
                 </Menu>
@@ -226,7 +228,9 @@
             </Grid>
             <Grid x:Name="tanksInfo" IsVisibleChanged="TanksInfo_IsVisibleChanged" Visibility="Hidden" Margin="179,0,0,10" HorizontalAlignment="Left" Width="892">
                 <Menu VerticalAlignment="Top" Background="{x:Null}">
+                    <MenuItem x:Name="backGasStation1" Click="BackGasStation_Click" Cursor="Hand" Background="{x:Null}" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Header="&lt;Назад"/>
                     <MenuItem x:Name="addTank"  FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Click="AddTank_Click" Background="{x:Null}" Header="Добавить тип топлива"/>
+                    <MenuItem x:Name="typesList" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Click="TypesList_Click" Background="{x:Null}" Header="Типы топлива"/>
                     <MenuItem x:Name="refuelTank" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Click="RefuelTank_Click" Background="{x:Null}" Header="Заправка резервуаров"/>
                     <MenuItem x:Name="tableOfComings" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Click="TableOfComings_Click" Background="{x:Null}" Header="Отчет по заправкам резервуаров"/>
                 </Menu>
@@ -297,9 +301,16 @@
                 <Menu HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" Margin="265,10,0,0" Width="250" Height="26">
                     <MenuItem x:Name="filterTables" HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" Width="250" Height="26" Header="Фильтр"/>
                 </Menu>
-                <ScrollViewer x:Name="tableContent" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0,41,0,0">
+                <ScrollViewer x:Name="tableContent" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0,41,0,69">
                     <Grid x:Name="tablePage"/>
                 </ScrollViewer>
+                <ListView x:Name="additionalButtonsTable" Background="{x:Null}" Height="30" VerticalAlignment="Bottom">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
             </Grid>
             <Grid x:Name="suppliesPage" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,10,10">
                 <TextBox x:Name="searchBox" FontSize="14" HorizontalAlignment="Left" Width="250" Margin="10" VerticalAlignment="Top" Padding="5" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light"  Height="26" Style="{DynamicResource tbStyle}"/>
@@ -325,13 +336,20 @@
                     <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0" Content="Краткое наименование:"/>
                     <TextBox x:Name="compShortName" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,60,0,0" Width="500"/>
                     <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,89,0,0" Content="ИНН:"/>
-                    <mah:NumericUpDown x:Name="inn"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,89,0,0" Width="500" StringFormat="0000000000"></mah:NumericUpDown>
+                    <xctk:MaskedTextBox x:Name="inn" Height="26" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,89,0,0" Width="500" Mask="0000000000"></xctk:MaskedTextBox>
                     <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,118,0,0" Content="ОГРН:"/>
-                    <mah:NumericUpDown x:Name="ogrn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,118,0,0" Width="500" StringFormat="0000000000000"/>
+                    <xctk:MaskedTextBox x:Name="ogrn" Height="26" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,118,0,0" Width="500" Mask="0000000000000"/>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,212,0,0" Content="Договор:"/>
+                    <TextBox x:Name="contractPath" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,212,0,0" Width="500"/>
+                    <Button x:Name="selectContractFile" Click="SelectContractFile_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" Margin="658,212,0,0"></Button>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,241,0,0" Content="Телефон:"/>
+                    <xctk:MaskedTextBox x:Name="suppPhone" VerticalContentAlignment="Center" Mask="+700000000-00" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,241,0,0" Width="500" Height="24"/>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,270,0,0" Content="Адрес:"/>
+                    <TextBox x:Name="suppAdress" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,270,0,0" Width="500"/>
+                    <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,299,0,-27" Content="Ответственное лицо:"/>
+                    <TextBox x:Name="suppResponsible" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,301,0,0" Width="500"/>
+
                 </Grid>
-                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,212,0,0" Content="Договор:"/>
-                <TextBox x:Name="contractPath" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,212,0,0" Width="500"/>
-                <Button x:Name="selectContractFile" Click="SelectContractFile_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" Margin="658,212,0,0"></Button>
                 <Button x:Name="saveCompData" Click="SaveCompData_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="30" Height="30">
                     <Image Source="./Resources/Icons/save.png"/>
                 </Button>
@@ -359,32 +377,54 @@
                 </ListView>
                 <Label FontSize="20" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,194,0,0">Количество:</Label>
                 <Slider x:Name="fuelVolumeSlider" Minimum="0" ValueChanged="FuelVolumeValueChanged" HorizontalAlignment="Left" VerticalAlignment="Top" Width="874" Margin="0,232,0,0"/>
-                <mah:NumericUpDown x:Name="fuelVolume" FontSize="20"  Minimum="0" HorizontalAlignment="Left" ValueChanged="FuelVolume_ValueChanged" VerticalAlignment="Top" Margin="0,290,0,0" Width="200"/>
+                <mah:NumericUpDown x:Name="fuelVolume" FontSize="20" StringFormat="0.00" Minimum="0" HorizontalAlignment="Left" ValueChanged="FuelVolume_ValueChanged" VerticalAlignment="Top" Margin="0,290,0,0" Width="200">
+                </mah:NumericUpDown>
                 <Button x:Name="saveFueling" Click="SaveFueling_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="30" Height="30">
                     <Image Source="/Resources/Icons/save.png" Stretch="Uniform"/>
                 </Button>
                 <Label x:Name="fuelSummaryL" FontSize="20" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="563,290,0,0">Стоимость:</Label>
-                <mah:NumericUpDown x:Name="fuelSummary" IsReadOnly="True" FontSize="20"  Minimum="0" HorizontalAlignment="Left" ValueChanged="FuelVolume_ValueChanged" VerticalAlignment="Top" Margin="684,290,0,0" Width="200"/>
+                <TextBox x:Name="fuelSummary" IsReadOnly="True" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="684,290,0,0" Width="200"/>
+                <Label x:Name="fuelPriceL" FontSize="20" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="563,328,0,0">по цене:</Label>
+                <TextBox x:Name="fuelPrice" IsReadOnly="True" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="684,332,0,0" Width="200"/>
+                <Label x:Name="fuelPriceL2" FontSize="20" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="889,328,-52,0">руб.</Label>
             </Grid>
             <Grid x:Name="stuffers" IsVisibleChanged="Stuffers_IsVisibleChanged" HorizontalAlignment="Left" Visibility="Hidden" Margin="179,0,0,10" Width="884">
                 <Label x:Name="stuffersBack1" MouseDown="StuffersBack1_MouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light" >&lt;Назад</Label>
-                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,78,0,0">Фамилия:</Label>
-                <TextBox x:Name="stuffLastName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,78,0,0"/>
-                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Имя:" Margin="0,110,0,0"/>
-                <TextBox  x:Name="stuffFirstName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,111,0,0"/>
-                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Отчество:" Margin="0,141,0,0"/>
-                <TextBox  x:Name="stuffMiddleName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,142,0,0"/>
-                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Дата рождения:" Margin="0,173,0,0"/>
-                <DatePicker  x:Name="stuffBirth" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="128,174,0,0"/>
-                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Пол:" Margin="0,205,0,0"/>
-                <ComboBox   x:Name="stuffSex" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,206,0,0"/>
-                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Договор:" Margin="0,236,0,0"/>
-                <TextBox   x:Name="stuffFile" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="539" Margin="127,237,0,0"/>
-                <Button x:Name="stuffLoadFile" Click="StuffLoadFile_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" Margin="671,236,0,0">
-                    <Image gif:AnimationBehavior.SourceUri="Resources/Icons/download.gif"/>
-                </Button>
-                <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Должность:" Margin="0,270,0,0"/>
-                <ComboBox   x:Name="stuffPost" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,268,0,0"/>
+                <ScrollViewer Height="268" VerticalAlignment="Top" Margin="0,29,0,0">
+                    <Grid>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,78,0,0">Фамилия:</Label>
+                        <TextBox x:Name="stuffLastName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,78,0,0"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Имя:" Margin="0,110,0,0"/>
+                        <TextBox  x:Name="stuffFirstName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,111,0,0"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Отчество:" Margin="0,141,0,0"/>
+                        <TextBox  x:Name="stuffMiddleName" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,142,0,0"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Дата рождения:" Margin="0,173,0,0"/>
+                        <DatePicker  x:Name="stuffBirth" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="128,174,0,0"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Пол:" Margin="0,205,0,0"/>
+                        <ComboBox   x:Name="stuffSex" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,206,0,0"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Договор:" Margin="0,236,0,0"/>
+                        <TextBox   x:Name="stuffFile" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="429" Margin="127,237,0,0"/>
+                        <Button x:Name="stuffLoadFile" Click="StuffLoadFile_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="26" Height="26" Margin="561,236,0,0">
+                            <Image gif:AnimationBehavior.SourceUri="Resources/Icons/download.gif"/>
+                        </Button>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Должность:" Margin="0,270,0,0"/>
+                        <ComboBox   x:Name="stuffPost" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="260" Margin="127,268,0,0"/>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Телефон:" Margin="0,302,0,0"/>
+                        <xctk:MaskedTextBox x:Name="stuffPhone" Mask="+799999999-99" Height="26" Width="260" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="127,303,0,0"></xctk:MaskedTextBox>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Адрес:" Margin="0,334,0,0"/>
+                        <TextBox x:Name="stuffAdress" Height="26" Width="428" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="128,334,0,0"></TextBox>
+                        <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Дата принятия:" Margin="0,366,0,0"/>
+                        <DatePicker x:Name="stuffDateStart" Height="26" Width="260" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="128,367,0,0"></DatePicker>
+
+                        <Label x:Name="stuffDateEndL" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Дата увольнения:" Margin="0,398,0,0"/>
+                        <DatePicker x:Name="stuffDateEnd" Height="26" Width="260" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="139,399,0,0"></DatePicker>
+                        <Image x:Name="stuffPhoto" HorizontalAlignment="Right" VerticalAlignment="Top" Stretch="Fill" Width="250" Height="232"></Image>
+                        <Button x:Name="loadPhoto" Click="LoadPhoto_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Width="250" Margin="0,236,0,0">
+                            Загрузить фото
+                        </Button>
+                        <Button x:Name="dropPhoto" Click="DropPhoto_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Width="250" Margin="0,263,0,0" Content="Удалить фото"/>
+                    </Grid>
+                </ScrollViewer>
                 <GroupBox Header="Паспортные данные" Margin="0,302,0,35">
                     <Grid>
                         <Label FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Серия паспорта:" />
@@ -410,6 +450,9 @@
                 <Menu HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" Margin="265,24,0,0" Width="250" Height="26">
                     <MenuItem x:Name="filterProductsSales"  HorizontalAlignment="Left" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" VerticalAlignment="Top" Width="250" Height="26" Header="Фильтр"/>
                 </Menu>
+                <Label x:Name="basketSummL" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="12" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Margin="0,24,242,0">Общая стоимость:</Label>
+                <TextBox x:Name="basketSumm" IsReadOnly="True" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,24,77,0" Width="160"/>
+                <Label x:Name="basketRub" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="12" FontFamily="./Resources/Fonts/Gilroy/#Gilroy Light Italic" Margin="0,24,40,0">руб.</Label>
                 <ScrollViewer x:Name="productsSalesSV" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0,55,369,0">
                     <Grid x:Name="productsSales" Margin="0,55,0,0"/>
                 </ScrollViewer>

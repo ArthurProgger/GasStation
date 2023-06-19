@@ -14,7 +14,6 @@ namespace GasStation
 {
     public partial class MainWindow
     {
-        private bool _fuelSuppliers;
         private int _supplierId = -1;
         private void CompaniesPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -25,8 +24,11 @@ namespace GasStation
                     DataTable t = QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter($"SELECT * FROM suppliers WHERE id = {_supplierId}", App.SystemConfigs.ConnectionStr));
                     compShortName.Text = t.Rows[0][1].ToString();
                     compFullName.Text = t.Rows[0][2].ToString();
-                    inn.Value = (long)t.Rows[0][3];
-                    ogrn.Value = (long)t.Rows[0][4];
+                    inn.Text = (string)t.Rows[0][3];
+                    ogrn.Text = (string)t.Rows[0][4];
+                    suppPhone.Text = (string)t.Rows[0][6];
+                    suppAdress.Text = (string)t.Rows[0][7];
+                    suppResponsible.Text = (string)t.Rows[0][8];
 
                     int length = BitConverter.ToInt32(((byte[])t.Rows[0][5]).Take(4).ToArray(), 0);
                     contractPath.Text = Encoding.Default.GetString((byte[])t.Rows[0][5], 4, length);
@@ -65,6 +67,7 @@ namespace GasStation
                         compShortName.Text = comp.НаимСокрЮЛ;
                         inn.Value = double.Parse(comp.ИНН);
                         ogrn.Value = double.Parse(comp.ОГРН);
+                        suppAdress.Text = comp.АдресПолн;
                         compData.IsEnabled = false;
                     }
                 });
@@ -74,7 +77,7 @@ namespace GasStation
         {
             SWF.FileDialog fd = new SWF.OpenFileDialog
             {
-                Filter = "Документ Word|*.doc;*.docx;*.exe|Текстовый файл|*.txt"
+                Filter = "Документ Word|*.doc;*.docx|Текстовый файл|*.txt"
             };
             fd.ShowDialog();
             contractPath.Text = fd.FileName;
@@ -107,7 +110,7 @@ namespace GasStation
                                 throw new Exception("Файл договора некорректен!");
 
 
-                            SqlCommand comm = new SqlCommand($"INSERT INTO {tableName} VALUES ('{compShortName.Text}', '{compFullName.Text}', {inn.Value}, {ogrn.Value}, @p)", GetConnectionObj<SqlConnection>());
+                            SqlCommand comm = _supplierId == -1 ? new SqlCommand($"INSERT INTO {tableName} VALUES ('{compShortName.Text}', '{compFullName.Text}', '{inn.Text}', '{ogrn.Text}', @p, '{suppPhone.Text}', '{suppAdress.Text}', '{suppResponsible.Text}')", GetConnectionObj<SqlConnection>()) : new SqlCommand($"UPDATE {tableName} SET short_name = '{compShortName.Text}', full_name = '{compFullName.Text}', inn = '{inn.Text}', ogrn = '{ogrn.Text}', contract_file = @p, phone = '{suppPhone.Text}', adress = '{suppAdress.Text}', responsible = '{suppResponsible.Text}' WHERE id = {_supplierId}", GetConnectionObj<SqlConnection>());
                             comm.Parameters.Add(p);
                             Query(comm);
 
@@ -119,8 +122,8 @@ namespace GasStation
                             break;
                         }
                 }
-                menu.SelectedIndex = 0;
-                SideMessage.Show(Content as Grid, "Поставщик добавлен!", SideMessage.Type.Info, Position.Right);
+                menu.SelectedIndex = 1;
+                SideMessage.Show(Content as Grid, "Поставщик сохранен!", SideMessage.Type.Info, Position.Right);
             }
             catch (Exception err)
             {

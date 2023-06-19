@@ -15,6 +15,9 @@ namespace GasStation
     {
         private void TanksInfo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            addTank.Visibility = App.SystemConfigs.Login.Contains("tanker") ? Visibility.Hidden : Visibility.Visible;
+            typesList.Visibility = App.SystemConfigs.Login.Contains("tanker") ? Visibility.Hidden : Visibility.Visible;
+
             if (tanksInfo.Visibility == Visibility.Visible)
             {
                 try
@@ -99,6 +102,18 @@ namespace GasStation
                         Grid.SetRow(tanksInfoContent.Children[tanksInfoContent.Children.Count - 1], tanksInfoContent.RowDefinitions.Count - 1);
                         Grid.SetColumn(tanksInfoContent.Children[tanksInfoContent.Children.Count - 1], i);
 
+                        ((Grid)tanksInfoContent.Children[tanksInfoContent.Children.Count - 1]).Children.Add(new Label
+                        {
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            FontSize = 20,
+                            Margin = new Thickness(150 , 100, 0 , 0),
+                            FontFamily = new FontFamily("./Resources/Fonts/Gilroy/#Gilroy Medium"),
+                            Content = $"Объем: {val.ToString("0.00")}/{r[1]}"
+                        });
+
+                        Grid.SetRow(tanksInfoContent.Children[tanksInfoContent.Children.Count - 1], tanksInfoContent.RowDefinitions.Count - 1);
+                        Grid.SetColumn(tanksInfoContent.Children[tanksInfoContent.Children.Count - 1], i);
+
                         i++;
                     });
                 }
@@ -109,12 +124,13 @@ namespace GasStation
             }
         }
 
-        private async void AddTank_Click(object sender, RoutedEventArgs e) => await EditPageLoad("fuel_types", new List<string> { }, false, true);
+        private async void AddTank_Click(object sender, RoutedEventArgs e) => await EditPageLoad("fuel_types", new List<string> { }, false, true, null, new Dictionary<string, RoutedEventHandler> { { "back_arrow", new RoutedEventHandler(async (object obj, RoutedEventArgs rea) => await App.OpenFunction(tanksInfo, tiles, Width - menu.ActualWidth)) } });
         private async void RefuelTank_Click(object sender, RoutedEventArgs e)
         {
             _gasColumnNum = -1;
             await App.OpenFunction(fueling, menu, Width - menu.ActualWidth);
         }
-        private async void TableOfComings_Click(object sender, RoutedEventArgs e) => await TablePageLoad("fuel_coming", true, false, true, QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter("exec get_fuel_comings", App.SystemConfigs.ConnectionStr)));
+        private async void TableOfComings_Click(object sender, RoutedEventArgs e) => await TablePageLoad("fuel_coming", true, false, true, QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter("exec get_fuel_comings", App.SystemConfigs.ConnectionStr)), null, new Dictionary<string, RoutedEventHandler> { { "back_arrow", new RoutedEventHandler(async (object obj, RoutedEventArgs rea) => await App.OpenFunction(tanksInfo, tiles, Width - menu.ActualWidth)) } });
+        private async void TypesList_Click(object sender, RoutedEventArgs e) => await TablePageLoad("fuel_types", true, true, false, QuerySelect<SqlDataAdapter, DataTable>(new SqlDataAdapter("exec get_tanks_volume", App.SystemConfigs.ConnectionStr)), null, new Dictionary<string, RoutedEventHandler> { { "back_arrow", new RoutedEventHandler(async (object obj, RoutedEventArgs rea) => await App.OpenFunction(tanksInfo, tiles, Width - menu.ActualWidth)) } });
     }
 }

@@ -28,11 +28,17 @@ namespace GasStation
                     {
                         fuelSummary.Visibility = Visibility.Hidden;
                         fuelSummaryL.Visibility = Visibility.Hidden;
+                        fuelPriceL.Visibility = Visibility.Hidden;
+                        fuelPriceL2.Visibility = Visibility.Hidden;
+                        fuelPrice.Visibility = Visibility.Hidden;
                     }
                     else
                     {
                         fuelSummary.Visibility = Visibility.Visible;
                         fuelSummaryL.Visibility = Visibility.Visible;
+                        fuelPriceL.Visibility = Visibility.Visible;
+                        fuelPriceL2.Visibility = Visibility.Visible;
+                        fuelPrice.Visibility = Visibility.Visible;
                     }
 
                     t.Rows.Cast<DataRow>().ToList().ForEach((DataRow r) =>
@@ -127,6 +133,7 @@ namespace GasStation
                                     fuelVolumeSlider.Maximum = double.Parse(volume.Rows[0][1].ToString());
                                     fuelVolume.Maximum = double.Parse(volume.Rows[0][1].ToString());
                                     _selectedFuelPrice = _fuelPrices[fuelTypes.Items.IndexOf((ListViewItem)((RadioButton)obj).Parent.GetParentObject())];
+                                    fuelPrice.Text = _selectedFuelPrice.ToString("0.00");
                                 }
                             }
                             else
@@ -134,6 +141,7 @@ namespace GasStation
                                 fuelVolumeSlider.Maximum = double.Parse(tankVolume.Rows[0][2].ToString());
                                 fuelVolume.Maximum = double.Parse(tankVolume.Rows[0][2].ToString());
                                 _selectedFuelPrice = _fuelPrices[fuelTypes.Items.IndexOf(((Grid)((RadioButton)obj).Parent).Parent)];
+                                fuelPrice.Text = _selectedFuelPrice.ToString("0.00");
                             }
                         });
                     });
@@ -154,7 +162,7 @@ namespace GasStation
         {
             fuelVolume.Value = fuelVolumeSlider.Value;
             if (_fuelPrices.Count > 0)
-                fuelSummary.Value = fuelVolume.Value * (double)_selectedFuelPrice;
+                fuelSummary.Text = Math.Round(fuelVolume.Value.Value * (double)_selectedFuelPrice, 2).ToString();
         }
         private void FuelVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e) => fuelVolumeSlider.Value = fuelVolume.Value ?? 0;
 
